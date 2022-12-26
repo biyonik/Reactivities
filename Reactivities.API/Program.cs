@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Reactivities.API.Extensions;
 using Reactivities.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,21 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
-});
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy", policy =>
-    {
-        policy.AllowAnyOrigin().AllowAnyOrigin().AllowAnyMethod();
-    });
-});
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
