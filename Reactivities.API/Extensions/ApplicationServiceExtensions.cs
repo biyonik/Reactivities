@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Reactivities.Application.Activities;
 using Reactivities.Application.Core;
@@ -15,10 +16,10 @@ public static class ApplicationServiceExtensions
         {
             options.UseNpgsql(configuration.GetConnectionString("Default"));
         });
-        services.AddCors(options =>
+        services.AddCors((CorsOptions options) =>
         {
             options.AddPolicy("CorsPolicy",
-                policy => { policy.AllowAnyOrigin().AllowAnyOrigin().AllowAnyMethod(); });
+                (CorsPolicyBuilder policy) => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
         });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

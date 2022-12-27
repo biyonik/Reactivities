@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, {useState} from 'react';
 import {ActivityModel} from '../../../../Models/ActivityModel';
 import {Button, Item, Label, List, Segment} from "semantic-ui-react";
 import DateFormattedViewer from '../../../../Components/DateFormattedViewer';
@@ -8,16 +8,24 @@ interface Props {
     selectActivity: (id: string) => void;
     deleteActivity: (id: string) => void;
     submitting: boolean;
+    setSelectedActivity: (activity: ActivityModel | undefined) => void;
 }
 
-const ActivityListComponent: React.FC<Props> = ({activities, selectActivity, deleteActivity, submitting}: Props) => {
+const ActivityListComponent: React.FC<Props> = ({
+                                                    activities,
+                                                    selectActivity,
+                                                    deleteActivity,
+                                                    submitting,
+                                                    setSelectedActivity
+                                                }: Props) => {
     const [target, setTarget] = useState('');
-    
+
     const handleActivityDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
         setTarget(event.currentTarget.name);
         deleteActivity(id);
+        setSelectedActivity(undefined);
     }
-    
+
     return (
         <Segment>
             <Item.Group divided>
@@ -37,12 +45,12 @@ const ActivityListComponent: React.FC<Props> = ({activities, selectActivity, del
                                     </div>
                                 </Item.Description>
                                 <Item.Extra>
-                                    <Button 
-                                            name={activity.id}
-                                            loading={submitting && target === activity.id} 
-                                            onClick={(e) => handleActivityDelete(e, activity.id)}
-                                            floated='right' content='Delete'
-                                            color='red'/>
+                                    <Button
+                                        name={activity.id}
+                                        loading={submitting && target === activity.id}
+                                        onClick={(e) => handleActivityDelete(e, activity.id)}
+                                        floated='right' content='Delete'
+                                        color='red'/>
                                     <Button onClick={() => selectActivity(activity.id)} floated='right' content='View'
                                             color='blue'/>
                                     <Label basic content={activity.category}/>

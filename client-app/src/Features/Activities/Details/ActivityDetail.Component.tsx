@@ -16,7 +16,6 @@ const ActivityDetailComponent: React.FC<Props> = ({activity, cancelSelectActivit
         cancelSelectActivity();
         closeForm();
     }
-    
     return (
         <Card fluid>
             <Image wrapped ui={false} src={`assets/categoryImages/${activity.category}.jpg`} alt=''/>

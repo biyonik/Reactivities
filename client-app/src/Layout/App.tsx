@@ -85,6 +85,7 @@ const App: React.FC = () => {
                 <ActivityDashboardComponent
                     activities={activities}
                     selectedActivity={selectedActivity}
+                    setSelectedActivity={setSelectedActivity}
                     selectActivity={handleSelectActivity}
                     cancelSelectActivity={handleCancelSelectedActivity}
                     editMode={editMode}
