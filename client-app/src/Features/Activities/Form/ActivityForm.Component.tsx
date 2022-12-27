@@ -6,9 +6,15 @@ interface Props {
     activity: ActivityModel | undefined;
     closeForm: () => void;
     createOrEdit: (activity: ActivityModel) => void;
+    submitting: boolean;
 }
 
-const ActivityFormComponent: React.FC<Props> = ({activity: selectedActivity, closeForm, createOrEdit}: Props) => {
+const ActivityFormComponent: React.FC<Props> = ({
+                                                    activity: selectedActivity,
+                                                    closeForm,
+                                                    createOrEdit,
+                                                    submitting
+                                                }: Props) => {
 
     const initialState = selectedActivity ?? {
         id: '',
@@ -44,14 +50,14 @@ const ActivityFormComponent: React.FC<Props> = ({activity: selectedActivity, clo
                                onChange={(e) => handleInputChange(e)}/>
                 <Form.Input placeholder='Category' name='category' value={activity.category}
                             onChange={(e) => handleInputChange(e)}/>
-                <Form.Input placeholder='Date' name='date' value={activity.date}
+                <Form.Input type='date' placeholder='Date' name='date' value={activity.date}
                             onChange={(e) => handleInputChange(e)}/>
                 <Form.Input placeholder='City' name='city' value={activity.city}
                             onChange={(e) => handleInputChange(e)}/>
                 <Form.Input placeholder='Venue' name='venue' value={activity.venue}
                             onChange={(e) => handleInputChange(e)}/>
                 <Button.Group widths='2'>
-                    <Button floated='right' positive type='submit' content='Submit'/>
+                    <Button loading={submitting} floated='right' positive type='submit' content='Submit'/>
                     <Button onClick={() => closeForm()} floated='right' type='button' content='Cancel'/>
                 </Button.Group>
             </Form>
