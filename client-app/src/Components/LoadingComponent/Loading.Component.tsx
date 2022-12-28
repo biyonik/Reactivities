@@ -9,7 +9,7 @@ interface Props {
 const LoadingComponent: React.FC<Props> = ({inverted = true, content = 'Loading...'}: Props) => {
     return (
         <Dimmer active={true} inverted={inverted}>
-            <Loader />
+            <Loader content={content} />
         </Dimmer>
     )
 }

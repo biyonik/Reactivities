@@ -2,35 +2,26 @@
 import {ActivityModel} from '../../../../Models/ActivityModel';
 import {Button, Item, Label, List, Segment} from "semantic-ui-react";
 import DateFormattedViewer from '../../../../Components/DateFormattedViewer';
+import { useStore } from '../../../../Stores/Store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-    activities: ActivityModel[];
-    selectActivity: (id: string) => void;
-    deleteActivity: (id: string) => void;
-    submitting: boolean;
-    setSelectedActivity: (activity: ActivityModel | undefined) => void;
-}
 
-const ActivityListComponent: React.FC<Props> = ({
-                                                    activities,
-                                                    selectActivity,
-                                                    deleteActivity,
-                                                    submitting,
-                                                    setSelectedActivity
-                                                }: Props) => {
+const ActivityListComponent: React.FC= () => {
+    const {activityStore} = useStore();
+    const {selectActivity, submitting, deleteActivity, activitiesByDate} = activityStore;
+    
     const [target, setTarget] = useState('');
 
     const handleActivityDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
         setTarget(event.currentTarget.name);
         deleteActivity(id);
-        setSelectedActivity(undefined);
     }
 
     return (
         <Segment>
             <Item.Group divided>
                 {
-                    activities.map((activity: ActivityModel) => (
+                    activitiesByDate.map((activity: ActivityModel) => (
                         <Item key={activity.id}>
                             <Item.Content>
                                 <Item.Header as='a'>{activity.title}</Item.Header>
@@ -64,4 +55,4 @@ const ActivityListComponent: React.FC<Props> = ({
     )
 }
 
-export default ActivityListComponent;
+export default observer(ActivityListComponent);

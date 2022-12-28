@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './Layout/App';
 import 'semantic-ui-css/semantic.min.css';
 import './style.scss'
+import {StoreContext, store} from './Stores/Store';
+
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
+
 root.render(
-    <App />
+    <StoreContext.Provider value={store}>
+        <App/>
+    </StoreContext.Provider>
 );
 

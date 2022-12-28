@@ -1,21 +1,27 @@
-﻿import React from 'react';
+﻿import { observer } from 'mobx-react-lite';
+import React from 'react';
 import {Button, Card, Image} from 'semantic-ui-react';
 import DateFormattedViewer from '../../../Components/DateFormattedViewer';
 import {ActivityModel} from '../../../Models/ActivityModel';
+import { useStore } from '../../../Stores/Store';
 
-interface Props {
-    activity: ActivityModel;
-    cancelSelectActivity: () => void;
-    openForm: (id?: string) => void;
-    closeForm: () => void;
-}
 
-const ActivityDetailComponent: React.FC<Props> = ({activity, cancelSelectActivity, openForm, closeForm}: Props) => {
-    
+
+const ActivityDetailComponent: React.FC = () => {
+    const {activityStore} = useStore();
+    const {selectedActivity: activity, cancelSelectedActivity, closeForm, openForm} = activityStore;
+
     const handleCancelSelectActivity = () => {
-        cancelSelectActivity();
+        cancelSelectedActivity();
         closeForm();
     }
+    
+    
+    if (!activity) return (
+        <></>
+    );
+    
+    
     return (
         <Card fluid>
             <Image wrapped ui={false} src={`assets/categoryImages/${activity.category}.jpg`} alt=''/>
@@ -40,4 +46,4 @@ const ActivityDetailComponent: React.FC<Props> = ({activity, cancelSelectActivit
     )
 }
 
-export default ActivityDetailComponent;
+export default observer(ActivityDetailComponent);

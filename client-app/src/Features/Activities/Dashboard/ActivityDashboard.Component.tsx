@@ -1,66 +1,30 @@
 ﻿import React from 'react';
 import {Grid, List} from 'semantic-ui-react';
-import {ActivityModel} from '../../../Models/ActivityModel';
 import ActivityListComponent from './ActivityList/ActivityList.Component';
 import ActivityDetailComponent from '../Details/ActivityDetail.Component';
 import ActivityFormComponent from '../Form/ActivityForm.Component';
+import {useStore} from '../../../Stores/Store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-    activities: ActivityModel[];
-    selectedActivity: ActivityModel | undefined;
-    selectActivity: (id: string) => void;
-    cancelSelectActivity: () => void;
-    editMode: boolean;
-    openForm: (id?: string) => void;
-    closeForm: () => void;
-    createOrEdit: (activity: ActivityModel) => void;
-    deleteActivity: (id: string) => void;
-    submitting: boolean;
-    setSelectedActivity: (activity: ActivityModel | undefined) => void
-}
 
-const ActivityDashboardComponent: React.FC<Props> = ({
-                                                         activities,
-                                                         selectedActivity,
-                                                         selectActivity,
-                                                         cancelSelectActivity,
-                                                         editMode,
-                                                         openForm,
-                                                         closeForm,
-                                                         createOrEdit,
-                                                         deleteActivity,
-                                                         submitting,
-                                                         setSelectedActivity
-                                                     }: Props) => {
+const ActivityDashboardComponent: React.FC = () => {
+
+    const {activityStore} = useStore();
+    const {selectedActivity, editMode} = activityStore;
+
     return (
         <Grid>
             <Grid.Column width='10'>
-                <ActivityListComponent
-                    activities={activities}
-                    selectActivity={selectActivity}
-                    deleteActivity={deleteActivity}
-                    submitting={submitting}
-                    setSelectedActivity={setSelectedActivity}
-                />
+                <ActivityListComponent />
             </Grid.Column>
             <Grid.Column width='6'>
                 {
-                    selectedActivity &&
-                    <ActivityDetailComponent
-                        activity={selectedActivity}
-                        cancelSelectActivity={cancelSelectActivity}
-                        openForm={openForm}
-                        closeForm={closeForm}
-                    />
+                    selectedActivity && !editMode &&
+                    <ActivityDetailComponent />
                 }
                 {
                     editMode &&
-                    <ActivityFormComponent
-                        closeForm={closeForm}
-                        activity={selectedActivity}
-                        createOrEdit={createOrEdit}
-                        submitting={submitting}
-                    />
+                    <ActivityFormComponent />
                 }
 
             </Grid.Column>
@@ -68,4 +32,4 @@ const ActivityDashboardComponent: React.FC<Props> = ({
     )
 }
 
-export default ActivityDashboardComponent;
+export default observer(ActivityDashboardComponent);
