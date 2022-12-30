@@ -11,7 +11,7 @@ const ActivityDashboardComponent: React.FC = () => {
     const {loadingInitial, loadActivities, activityRegistry} = activityStore;
     
     useEffect(() => {
-        if (activityRegistry.size === 0) loadActivities();
+        if (activityRegistry.size <= 1) loadActivities();
     }, [loadActivities]);
 
 
