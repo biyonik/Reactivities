@@ -10,7 +10,7 @@ import {v4 as uuid} from 'uuid';
 
 const ActivityFormComponent: React.FC = () => {
     const {activityStore} = useStore();
-    const {selectedActivity, createActivity, updateActivity, submitting, loadActivity, loadingInitial} = activityStore;
+    const {createActivity, updateActivity, submitting, loadActivity, loadingInitial} = activityStore;
     const {id} = useParams();
     const navigate = useNavigate();
     

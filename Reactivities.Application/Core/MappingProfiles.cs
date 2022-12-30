@@ -3,7 +3,7 @@ using Reactivities.Domain;
 
 namespace Reactivities.Application.Core;
 
-public class MappingProfiles: Profile
+public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {

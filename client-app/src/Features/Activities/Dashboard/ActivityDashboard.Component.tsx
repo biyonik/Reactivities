@@ -1,10 +1,10 @@
-﻿import React, {useEffect} from 'react';
-import {Grid, List} from 'semantic-ui-react';
+import React, {useEffect} from 'react';
+import {Grid} from 'semantic-ui-react';
 import ActivityListComponent from './ActivityList/ActivityList.Component';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
 import { useStore } from '../../../Stores/Store';
-
+import ActivityFiltersComponent from './ActivityFilters/ActivityFilters.Component';
 
 const ActivityDashboardComponent: React.FC = () => {
     const {activityStore} = useStore();
@@ -23,7 +23,7 @@ const ActivityDashboardComponent: React.FC = () => {
                 <ActivityListComponent />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Activity Filters</h2>
+                <ActivityFiltersComponent />
             </Grid.Column>
         </Grid>
     )

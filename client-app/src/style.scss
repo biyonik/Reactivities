@@ -1,4 +1,9 @@
 ﻿body {
-  background-color: #EAEAEA!important;
+  background-color: #EAEAEA !important;
 }
 
+.react-calendar {
+  width: 100%!important;
+  border: none;
+  box-shadow: 0 1px 2px 0 rgba(36, 36, 38, .15);
+}

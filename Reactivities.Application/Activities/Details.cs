@@ -11,8 +11,8 @@ public class Details
     {
         public Guid Id { get; set; }
     }
-    
-    public class Handler: IRequestHandler<Query, Activity>
+
+    public class Handler : IRequestHandler<Query, Activity>
     {
         private readonly DataContext _context;
 
@@ -20,10 +20,10 @@ public class Details
         {
             _context = context;
         }
-        
+
         public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            return await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         }
     }
 }

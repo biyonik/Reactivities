@@ -5,9 +5,8 @@ using Reactivities.Domain;
 
 namespace Reactivities.API.Controllers;
 
-public class ActivitiesController: BaseApiController
+public class ActivitiesController : BaseApiController
 {
-    
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -18,16 +17,13 @@ public class ActivitiesController: BaseApiController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var activity = await Mediator.Send(new Details.Query{Id = id});
-        if (activity == null)
-        {
-            return NotFound();
-        }
+        var activity = await Mediator.Send(new Details.Query { Id = id });
+        if (activity == null) return NotFound();
         return Ok(activity);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody]Activity activity)
+    public async Task<IActionResult> Add([FromBody] Activity activity)
     {
         await Mediator.Send(new Create.Command { Activity = activity });
         return StatusCode((int)HttpStatusCode.Created);

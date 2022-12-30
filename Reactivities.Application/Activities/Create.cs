@@ -19,7 +19,7 @@ public class Create
         {
             _context = context;
         }
-        
+
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
             await _context.Activities.AddAsync(request.Activity, cancellationToken);

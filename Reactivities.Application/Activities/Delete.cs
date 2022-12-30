@@ -19,7 +19,7 @@ public class Delete
         {
             _context = context;
         }
-        
+
         public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
             var activity = await _context.Activities.FindAsync(request.Id);
@@ -28,5 +28,4 @@ public class Delete
             return Unit.Value;
         }
     }
-
 }

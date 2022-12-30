@@ -1,7 +1,6 @@
-import React, {useState, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import {Container} from 'semantic-ui-react';
 import NavBar from './NavBar/NavBar';
-import {v4 as uuid} from 'uuid';
 import {Outlet, useLocation} from 'react-router-dom';
 import {observer} from 'mobx-react-lite';
 import HomePage from '../Pages/HomePage/Home.Page';

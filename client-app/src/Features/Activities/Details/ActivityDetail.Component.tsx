@@ -1,11 +1,13 @@
 ﻿import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
-import {Link, useParams } from 'react-router-dom';
-import {Button, Card, Image} from 'semantic-ui-react';
-import DateFormattedViewer from '../../../Components/DateFormattedViewer';
+import {useParams } from 'react-router-dom';
+import { Grid } from 'semantic-ui-react';
 import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
-import {ActivityModel} from '../../../Models/ActivityModel';
 import { useStore } from '../../../Stores/Store';
+import ActivityDetailedChatComponent from './ActivityDetailedChat/ActivityDetailedChat.Component';
+import ActivityDetailedHeaderComponent from './ActivityDetailedHeader/ActivityDetailedHeader.Component';
+import ActivityDetailedInfoComponent from './ActivityDetailedInfo/ActivityDetailedInfo.Component';
+import ActivityDetailedSidebarComponent from './ActivityDetailedSidebar/ActivityDetailedSidebar.Component';
 
 
 
@@ -22,26 +24,16 @@ const ActivityDetailComponent: React.FC = () => {
 
     
     return (
-        <Card fluid>
-            <Image wrapped ui={false} src={`/assets/categoryImages/${activity.category}.jpg`} alt=''/>
-            <Card.Content>
-                <Card.Header>{activity.title}</Card.Header>
-                <Card.Meta>
-                    <span>
-                        <DateFormattedViewer date={activity.date}/>
-                    </span>
-                </Card.Meta>
-                <Card.Description>
-                    {activity.description}
-                </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button.Group widths='2'>
-                    <Button as={Link} to={`/manage/${activity.id}`} basic color='blue' content='Edit'/>
-                    <Button as={Link} to='/activities' basic color='grey' content='Cancel'/>
-                </Button.Group>
-            </Card.Content>
-        </Card>
+        <Grid>
+            <Grid.Column width={10}>
+                <ActivityDetailedHeaderComponent activity={activity} />
+                <ActivityDetailedInfoComponent activity={activity} />
+                <ActivityDetailedChatComponent />
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <ActivityDetailedSidebarComponent />
+            </Grid.Column>
+        </Grid>
     )
 }
 
