@@ -1,24 +1,21 @@
 ﻿import React, {useEffect} from 'react';
 import {Grid, List} from 'semantic-ui-react';
 import ActivityListComponent from './ActivityList/ActivityList.Component';
-import ActivityDetailComponent from '../Details/ActivityDetail.Component';
-import ActivityFormComponent from '../Form/ActivityForm.Component';
-import {useStore} from '../../../Stores/Store';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
+import { useStore } from '../../../Stores/Store';
 
 
 const ActivityDashboardComponent: React.FC = () => {
-
     const {activityStore} = useStore();
-    const {selectedActivity, editMode, loadingInitial} = activityStore;
+    const {loadingInitial} = activityStore;
     
     useEffect(() => {
         activityStore.loadActivities();
     }, [activityStore]);
 
 
-    if (activityStore.loadingInitial) return <LoadingComponent content='Loading App...' inverted={false} />
+    if (loadingInitial) return <LoadingComponent content='Loading App...' inverted={false} />
 
     return (
         <Grid>
@@ -26,15 +23,7 @@ const ActivityDashboardComponent: React.FC = () => {
                 <ActivityListComponent />
             </Grid.Column>
             <Grid.Column width='6'>
-                {
-                    selectedActivity && !editMode &&
-                    <ActivityDetailComponent />
-                }
-                {
-                    editMode &&
-                    <ActivityFormComponent />
-                }
-
+                <h2>Activity Filters</h2>
             </Grid.Column>
         </Grid>
     )

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const ActivityListComponent: React.FC= () => {
     const {activityStore} = useStore();
-    const {selectActivity, submitting, deleteActivity, activitiesByDate} = activityStore;
+    const {submitting, deleteActivity, activitiesByDate} = activityStore;
     
     const [target, setTarget] = useState('');
 

@@ -1,7 +1,9 @@
 ﻿import { observer } from 'mobx-react-lite';
-import React from 'react';
+import React, { useEffect } from 'react';
+import {Link, useParams } from 'react-router-dom';
 import {Button, Card, Image} from 'semantic-ui-react';
 import DateFormattedViewer from '../../../Components/DateFormattedViewer';
+import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
 import {ActivityModel} from '../../../Models/ActivityModel';
 import { useStore } from '../../../Stores/Store';
 
@@ -9,22 +11,19 @@ import { useStore } from '../../../Stores/Store';
 
 const ActivityDetailComponent: React.FC = () => {
     const {activityStore} = useStore();
-    const {selectedActivity: activity, cancelSelectedActivity, closeForm, openForm} = activityStore;
+    const {selectedActivity: activity, loadingInitial, loadActivity} = activityStore;
+    const {id} = useParams();
+    
+    useEffect(() => {
+        if (id) loadActivity(id);
+    }, [id, loadActivity])
+    
+    if (loadingInitial  || !activity) return <LoadingComponent content='Loading App...' inverted={false} />
 
-    const handleCancelSelectActivity = () => {
-        cancelSelectedActivity();
-        closeForm();
-    }
-    
-    
-    if (!activity) return (
-        <></>
-    );
-    
     
     return (
         <Card fluid>
-            <Image wrapped ui={false} src={`assets/categoryImages/${activity.category}.jpg`} alt=''/>
+            <Image wrapped ui={false} src={`/assets/categoryImages/${activity.category}.jpg`} alt=''/>
             <Card.Content>
                 <Card.Header>{activity.title}</Card.Header>
                 <Card.Meta>
@@ -38,8 +37,8 @@ const ActivityDetailComponent: React.FC = () => {
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(activity.id)} basic color='blue' content='Edit'/>
-                    <Button onClick={() => handleCancelSelectActivity()} basic color='grey' content='Cancel'/>
+                    <Button as={Link} to={`/manage/${activity.id}`} basic color='blue' content='Edit'/>
+                    <Button as={Link} to='/activities' basic color='grey' content='Cancel'/>
                 </Button.Group>
             </Card.Content>
         </Card>
