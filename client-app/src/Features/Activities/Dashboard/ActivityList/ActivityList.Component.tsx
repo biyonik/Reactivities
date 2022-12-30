@@ -4,6 +4,7 @@ import {Button, Item, Label, List, Segment} from "semantic-ui-react";
 import DateFormattedViewer from '../../../../Components/DateFormattedViewer';
 import { useStore } from '../../../../Stores/Store';
 import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
 
 
 const ActivityListComponent: React.FC= () => {
@@ -42,7 +43,7 @@ const ActivityListComponent: React.FC= () => {
                                         onClick={(e) => handleActivityDelete(e, activity.id)}
                                         floated='right' content='Delete'
                                         color='red'/>
-                                    <Button onClick={() => selectActivity(activity.id)} floated='right' content='View'
+                                    <Button as={Link} to={`/activities/${activity.id}`} floated='right' content='View'
                                             color='blue'/>
                                     <Label basic content={activity.category}/>
                                 </Item.Extra>

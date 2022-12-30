@@ -1,16 +1,24 @@
-﻿import React from 'react';
+﻿import React, {useEffect} from 'react';
 import {Grid, List} from 'semantic-ui-react';
 import ActivityListComponent from './ActivityList/ActivityList.Component';
 import ActivityDetailComponent from '../Details/ActivityDetail.Component';
 import ActivityFormComponent from '../Form/ActivityForm.Component';
 import {useStore} from '../../../Stores/Store';
 import { observer } from 'mobx-react-lite';
+import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
 
 
 const ActivityDashboardComponent: React.FC = () => {
 
     const {activityStore} = useStore();
-    const {selectedActivity, editMode} = activityStore;
+    const {selectedActivity, editMode, loadingInitial} = activityStore;
+    
+    useEffect(() => {
+        activityStore.loadActivities();
+    }, [activityStore]);
+
+
+    if (activityStore.loadingInitial) return <LoadingComponent content='Loading App...' inverted={false} />
 
     return (
         <Grid>

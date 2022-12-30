@@ -4,6 +4,8 @@ import App from './Layout/App';
 import 'semantic-ui-css/semantic.min.css';
 import './style.scss'
 import {StoreContext, store} from './Stores/Store';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './Router/Routes';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -11,7 +13,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <StoreContext.Provider value={store}>
-        <App/>
+        <RouterProvider router={router} />
     </StoreContext.Provider>
 );
 
