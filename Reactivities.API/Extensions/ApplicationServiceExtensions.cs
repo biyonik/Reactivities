@@ -1,8 +1,11 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Reactivities.Application.Activities;
 using Reactivities.Application.Core;
+using Reactivities.Application.Core.Profiles.AutoMapper;
 using Reactivities.Persistence;
 
 namespace Reactivities.API.Extensions;
@@ -26,6 +29,8 @@ public static class ApplicationServiceExtensions
 
         services.AddMediatR(typeof(List.Query));
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining<Create>();
         return services;
     }
 }
