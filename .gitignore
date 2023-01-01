@@ -499,3 +499,5 @@ $RECYCLE.BIN/
 /client-app/npm-debug.log*
 /client-app/yarn-debug.log*
 /client-app/yarn-error.log*
+
+./Reactivities.Persistence/Migrations
