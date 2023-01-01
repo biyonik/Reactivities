@@ -500,4 +500,4 @@ $RECYCLE.BIN/
 /client-app/yarn-debug.log*
 /client-app/yarn-error.log*
 
-./Reactivities.Persistence/Migrations
+Reactivities.Persistence/Migrations
