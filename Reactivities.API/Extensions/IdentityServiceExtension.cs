@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Reactivities.Application.Services.JWT;
 using Reactivities.Domain;
 using Reactivities.Persistence;
 
@@ -14,7 +15,7 @@ public static class IdentityServiceExtension
         }).AddEntityFrameworkStores<DataContext>();
 
         services.AddAuthentication();
-        
+        services.AddScoped<JwTokenService>();
         return services;
     }
 }
