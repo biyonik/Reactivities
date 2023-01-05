@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reactivities.API.DTOs.User;
+using Reactivities.Application.Constants.Message;
 using Reactivities.Application.Services.JWT;
 using Reactivities.Domain;
 
 namespace Reactivities.API.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
@@ -20,7 +24,7 @@ public class AccountController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -40,6 +44,41 @@ public class AccountController : ControllerBase
         }
 
         return Unauthorized();
+    }
 
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Register(RegisterDto registerDto)
+    {
+        if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+        {
+            return BadRequest(AccountMessageConstants.UserNameAlreadyTaken);
+        }
+        
+        if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+        {
+            return BadRequest(AccountMessageConstants.EmailAlreadyTaken);
+        }
+
+        var user = new AppUser
+        {
+            DisplayName = registerDto.DisplayName,
+            Email = registerDto.Email,
+            UserName = registerDto.Username,
+            Bio = $"{registerDto.DisplayName}'s bio"
+        };
+        
+        var result = await _userManager.CreateAsync(user, registerDto.Password);
+        if (result.Succeeded)
+        {
+            return Ok(new UserListDto
+            {
+                DisplayName = user.DisplayName,
+                Image = null,
+                Token = _tokenService.CreateToken(user),
+                Username = user.UserName
+            });
+        }
+
+        return BadRequest(result.Errors);
     }
 }

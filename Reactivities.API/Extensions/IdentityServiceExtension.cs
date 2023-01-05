@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Reactivities.Application.Services.JWT;
 using Reactivities.Domain;
 using Reactivities.Persistence;
@@ -12,9 +15,23 @@ public static class IdentityServiceExtension
         services.AddIdentityCore<AppUser>((IdentityOptions options) =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.User.RequireUniqueEmail = true;
         }).AddEntityFrameworkStores<DataContext>();
 
-        services.AddAuthentication();
+        var secretKey = configuration.GetSection("TokenOptions")["SecretKey"];
+        var key = new JwTokenService(configuration).GetSecrurityKey(secretKey);
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer((JwtBearerOptions options) =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         services.AddScoped<JwTokenService>();
         return services;
     }
