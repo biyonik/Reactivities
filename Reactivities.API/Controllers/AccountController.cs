@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,6 @@ using Reactivities.Domain;
 
 namespace Reactivities.API.Controllers;
 
-[AllowAnonymous]
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces("application/json")]
@@ -24,6 +24,7 @@ public class AccountController : ControllerBase
         _tokenService = tokenService;
     }
 
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
@@ -46,6 +47,7 @@ public class AccountController : ControllerBase
         return Unauthorized();
     }
 
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Register(RegisterDto registerDto)
     {
@@ -80,5 +82,19 @@ public class AccountController : ControllerBase
         }
 
         return BadRequest(result.Errors);
+    }
+
+    [Authorize]
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+        if (user == null) return BadRequest(AccountMessageConstants.UserNotFound);
+        return Ok(new UserListDto
+        {
+            DisplayName = user.DisplayName,
+            Username = user.UserName,
+            Image = null
+        });
     }
 }

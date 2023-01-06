@@ -5,4 +5,5 @@ public static class AccountMessageConstants
     public static string UserNameAlreadyTaken => "Username already taken!";
     public static string EmailAlreadyTaken => "E-mail already taken!";
     public static string ProblemRegisteringUser => "Problem registering user!";
+    public static string UserNotFound => "User not found!";
 }
