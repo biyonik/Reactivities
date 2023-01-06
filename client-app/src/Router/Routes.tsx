@@ -1,47 +1,52 @@
-﻿import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+﻿import {createBrowserRouter, Navigate, RouteObject} from "react-router-dom";
 import ActivityDashboardComponent from "../Features/Activities/Dashboard/ActivityDashboard.Component";
 import ActivityDetailComponent from "../Features/Activities/Details/ActivityDetail.Component";
 import ActivityFormComponent from "../Features/Activities/Form/ActivityForm.Component";
 import NotFound from "../Features/Errors/NotFound";
 import ServerError from "../Features/Errors/ServerError";
+import LoginFormComponent from "../Features/Users/Form/LoginForm.Component";
 import App from "../Layout/App";
 import HomePage from "../Pages/HomePage/Home.Page";
 
 export const routes: RouteObject[] = [
     {
         path: '/',
-        element: <App />,
+        element: <App/>,
         children: [
             {
                 path: 'activities',
-                element: <ActivityDashboardComponent />
+                element: <ActivityDashboardComponent/>
             },
             {
                 path: 'activities/:id',
-                element: <ActivityDetailComponent />
+                element: <ActivityDetailComponent/>
             },
             {
                 path: 'createActivity',
-                element: <ActivityFormComponent key='create' />
+                element: <ActivityFormComponent key='create'/>
             },
             {
                 path: 'manage/:id',
-                element: <ActivityFormComponent key='manage' />
+                element: <ActivityFormComponent key='manage'/>
+            },
+            {
+                path: 'login',
+                element: <LoginFormComponent />
             },
             {
                 path: 'not-found',
-                element: <NotFound />
+                element: <NotFound/>
             },
             {
                 path: 'server-error',
-                element: <ServerError />
+                element: <ServerError/>
             },
             {
                 path: '*',
-                element: <Navigate replace to='/not-found' />
+                element: <Navigate replace to='/not-found'/>
             }
         ]
-    }  
+    }
 ];
 
 export const router = createBrowserRouter(routes);
