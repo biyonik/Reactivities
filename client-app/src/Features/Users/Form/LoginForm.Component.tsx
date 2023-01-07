@@ -1,7 +1,7 @@
 ﻿import {ErrorMessage, Form, Formik} from 'formik';
 import {observer} from 'mobx-react-lite';
 import React from 'react';
-import {Button, Label} from 'semantic-ui-react';
+import {Button, Header, Label} from 'semantic-ui-react';
 import TextFieldCommonFormElement from '../../../Components/Common/FormElement/TextField.CommonFormElement';
 import {useStore} from '../../../Stores/Store';
 
@@ -15,6 +15,7 @@ const LoginFormComponent: React.FC = () => {
         >
             {({handleSubmit, isSubmitting, errors}) => (
                 <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
+                    <Header as='h2' content='Login to Reactivities' color='teal' textAlign='center' />
                     <TextFieldCommonFormElement placeholder='Email' name='email'></TextFieldCommonFormElement>
                     <TextFieldCommonFormElement placeholder='Password' name='password'
                                                 type='password'></TextFieldCommonFormElement>

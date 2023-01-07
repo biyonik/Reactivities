@@ -53,12 +53,17 @@ public class AccountController : ControllerBase
     {
         if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
         {
-            return BadRequest(AccountMessageConstants.UserNameAlreadyTaken);
-        }
-        
-        if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
+            ModelState.AddModelError("Username", AccountMessageConstants.UserNameAlreadyTaken);
+            // return ValidationProblem();
+        } else if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
         {
-            return BadRequest(AccountMessageConstants.EmailAlreadyTaken);
+            ModelState.AddModelError("Email", AccountMessageConstants.EmailAlreadyTaken);
+            // return ValidationProblem();
+        }
+
+        if (ModelState.ErrorCount > 0)
+        {
+            return ValidationProblem(); 
         }
 
         var user = new AppUser

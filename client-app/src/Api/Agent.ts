@@ -50,6 +50,14 @@ const axiosOnRejectedHandler = (error: AxiosError) => {
     return Promise.reject(error);
 }
 
+axios.interceptors.request.use(config => {
+   const token = store.commonStore.token;
+   if (token && config.headers) {
+       config.headers.Authorization = `Bearer ${token}`;
+   }
+   return config;
+});
+
 axios.interceptors.response.use(async response => {
     await sleep(1000);
     return response;
@@ -73,7 +81,7 @@ const Activities = {
 }
 
 const Account = {
-    current: () => requests.get<UserModel>('/Account'),
+    current: () => requests.get<UserModel>('/Account/GetCurrentUser'),
     login: (userDto: UserFormValues) => requests.post<UserModel>('/Account/Login', userDto),
     register: (userDto: UserFormValues) => requests.post<UserModel>('/Account/Register', userDto)
 }
