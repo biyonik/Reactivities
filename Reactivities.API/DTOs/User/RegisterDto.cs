@@ -17,7 +17,6 @@ public class RegisterDto
     
     [Required]
     public string Username { get; set; }
-    
-    [Required]
+
     public string Bio { get; set; }
 }

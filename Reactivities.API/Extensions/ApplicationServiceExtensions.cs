@@ -3,9 +3,11 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Reactivities.Application.Abstract;
 using Reactivities.Application.Activities;
 using Reactivities.Application.Core;
 using Reactivities.Application.Core.Profiles.AutoMapper;
+using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
 
 namespace Reactivities.API.Extensions;
@@ -31,6 +33,9 @@ public static class ApplicationServiceExtensions
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<Create>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserAccessor, UserAccessor>();
+        
         return services;
     }
 }
