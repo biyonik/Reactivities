@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Reactivities.Application.Abstract;
 using Reactivities.Application.Constants.Message;
 using Reactivities.Application.Core.Result.Abstract;
 using Reactivities.Application.Core.Result.Concrete;
@@ -28,15 +30,28 @@ public class Create
     public class Handler : IRequestHandler<Command, IResult<Unit>>
     {
         private readonly DataContext _context;
+        private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
+            _userAccessor = userAccessor;
         }
 
         public async Task<IResult<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername(), cancellationToken: cancellationToken);
+            var attendee = new ActivityAttendee
+            {
+                AppUser = user,
+                Activity = request.Activity,
+                IsHost = true
+            };
+            
+            request.Activity.Attendees.Add(attendee);
+            
             await _context.Activities.AddAsync(request.Activity, cancellationToken);
+            
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
             return !result 
                 ? new Result<Unit>().Failure(ActivityMessageContstants.CreateFailed) 
