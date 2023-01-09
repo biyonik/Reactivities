@@ -3,10 +3,8 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Reactivities.Application.Activities.DTOs;
-using Reactivities.Application.Constants.Message;
 using Reactivities.Application.Core.Result.Abstract;
 using Reactivities.Application.Core.Result.Concrete;
-using Reactivities.Domain;
 using Reactivities.Persistence;
 
 namespace Reactivities.Application.Activities;
