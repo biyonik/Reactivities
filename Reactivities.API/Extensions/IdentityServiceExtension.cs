@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Reactivities.Application.Services.JWT;
 using Reactivities.Domain;
+using Reactivities.Infrastructure.Security;
 using Reactivities.Persistence;
 
 namespace Reactivities.API.Extensions;
@@ -32,6 +34,15 @@ public static class IdentityServiceExtension
                     ValidateAudience = false
                 };
             });
+
+        services.AddAuthorization((AuthorizationOptions options) =>
+        {
+            options.AddPolicy("IsActivityHost", (AuthorizationPolicyBuilder policy) =>
+            {
+                policy.Requirements.Add(new IsHostRequirement());
+            });
+        });
+        services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
         services.AddScoped<JwTokenService>();
         return services;
     }
