@@ -8,7 +8,10 @@ export interface ActivityModel {
     category: string;
     city: string;
     venue: string;
-    hostUsername?: string;
+    hotUserName?: string;
     isCancelled?: boolean;
+    isGoing?: boolean;
+    isHost?: boolean;
+    host?: ProfileModel;
     attendees?: ProfileModel[];
 }

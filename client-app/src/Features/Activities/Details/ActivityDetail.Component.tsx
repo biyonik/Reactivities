@@ -31,7 +31,7 @@ const ActivityDetailComponent: React.FC = () => {
                 <ActivityDetailedChatComponent />
             </Grid.Column>
             <Grid.Column width={6}>
-                <ActivityDetailedSidebarComponent attendees={activity.attendees!} />
+                <ActivityDetailedSidebarComponent acitivty={activity} />
             </Grid.Column>
         </Grid>
     )

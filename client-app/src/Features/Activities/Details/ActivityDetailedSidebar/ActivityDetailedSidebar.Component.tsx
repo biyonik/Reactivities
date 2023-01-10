@@ -1,15 +1,18 @@
-﻿import { observer } from 'mobx-react-lite';
+﻿import {observer} from 'mobx-react-lite';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {Item, Label, List, Segment, Image } from 'semantic-ui-react';
-import { ProfileModel } from '../../../../Models/ProfileModel';
+import {Link} from 'react-router-dom';
+import {Item, Label, List, Segment, Image} from 'semantic-ui-react';
+import {ActivityModel} from '../../../../Models/ActivityModel';
+import {ProfileModel} from '../../../../Models/ProfileModel';
 
 interface Props {
- attendees: ProfileModel[];    
+    acitivty: ActivityModel;
 }
 
 
-const ActivityDetailedSidebarComponent: React.FC<Props> = ({attendees}: Props) => {
+const ActivityDetailedSidebarComponent: React.FC<Props> = ({acitivty: {attendees, host}}: Props) => {
+    if (!attendees) return <></>
+
     return (
         <>
             <Segment
@@ -27,13 +30,15 @@ const ActivityDetailedSidebarComponent: React.FC<Props> = ({attendees}: Props) =
                     {
                         attendees && attendees.map(attendee => (
                             <Item style={{position: 'relative'}} key={attendee.username}>
-                                <Label
-                                    style={{position: 'absolute'}}
-                                    color='orange'
-                                    ribbon='right'
-                                >
-                                    Host
-                                </Label>
+                                {attendee.username === host?.username && (
+                                    <Label
+                                        style={{position: 'absolute'}}
+                                        color='orange'
+                                        ribbon='right'
+                                    >
+                                        Host
+                                    </Label>
+                                )}
                                 <Image size='tiny' src={attendee.image || '/assets/user.png'}/>
                                 <Item.Content verticalAlign='middle'>
                                     <Item.Header as='h3'>
@@ -44,8 +49,8 @@ const ActivityDetailedSidebarComponent: React.FC<Props> = ({attendees}: Props) =
                             </Item>
                         ))
                     }
-                    
-                    
+
+
                     {/*<Item style={{position: 'relative'}}>*/}
                     {/*    <Image size='tiny' src={'/assets/user.png'}/>*/}
                     {/*    <Item.Content verticalAlign='middle'>*/}
@@ -55,7 +60,7 @@ const ActivityDetailedSidebarComponent: React.FC<Props> = ({attendees}: Props) =
                     {/*        <Item.Extra style={{color: 'orange'}}>Following</Item.Extra>*/}
                     {/*    </Item.Content>*/}
                     {/*</Item>*/}
-                    
+
                     {/*<Item style={{position: 'relative'}}>*/}
                     {/*    <Image size='tiny' src={'/assets/user.png'}/>*/}
                     {/*    <Item.Content verticalAlign='middle'>*/}

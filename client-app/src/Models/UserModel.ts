@@ -1,5 +1,5 @@
 ﻿export interface UserModel {
-    userName: string;
+    username: string;
     displayName: string;
     token: string;
     image?: string

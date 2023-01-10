@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Icon, Item, Segment} from "semantic-ui-react";
+import {Button, Icon, Item, Label, Segment} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {ActivityModel} from '../../../../../Models/ActivityModel';
 import {observer} from 'mobx-react-lite';
@@ -24,8 +24,22 @@ const ActivityListItemComponent: React.FC<Props> = ({activity}: Props) => {
                                 {activity.title}
                             </Item.Header>
                             <Item.Description>
-                                Hosted by Bob
+                                Hosted by {activity.host?.displayName}
                             </Item.Description>
+                            {activity.isHost && (
+                                <Item.Description>
+                                    <Label color='orange' basic>
+                                        You are hosting this activity
+                                    </Label>
+                                </Item.Description>
+                            )}
+                            {activity.isGoing && !activity.isHost && (
+                                <Item.Description>
+                                    <Label color='green' basic>
+                                        You are going to this activity
+                                    </Label>
+                                </Item.Description>
+                            )}
                         </Item.Content>
                     </Item>
                 </Item.Group>
