@@ -3,7 +3,8 @@ import agent from "../Api/Agent";
 import {ActivityModel} from "../Models/ActivityModel";
 import {v4 as uuid} from 'uuid';
 import {format} from "date-fns";
-import { store } from "./Store";
+import {store} from "./Store";
+import { ProfileModel } from "../Models/ProfileModel";
 
 export default class ActivityStore {
     activityRegistry = new Map<string, ActivityModel>();
@@ -20,14 +21,14 @@ export default class ActivityStore {
     get activitiesByDate() {
         return Array.from(this.activityRegistry.values()).sort((a, b) => a.date!.getTime() - b.date!.getTime());
     }
-    
+
     get groupedActivities() {
         return Object.entries(
             this.activitiesByDate.reduce((activities, activity) => {
                 const date = format(activity.date!, 'dd MMM yyyy');
                 activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 return activities;
-            }, {} as {[key: string]: ActivityModel[]})
+            }, {} as { [key: string]: ActivityModel[] })
         )
     }
 
@@ -163,6 +164,36 @@ export default class ActivityStore {
                 this.submitting = false;
                 this.loading = false;
             })
+        }
+    }
+
+    updateAttendance = async () => {
+        const user = store.userStore.user;
+        this.loading = true;
+        try {
+            await agent.Activities.attend(this.selectedActivity!.id);
+            runInAction(() => {
+                if (this.selectedActivity?.isGoing) {
+                    this.selectedActivity.attendees = this.selectedActivity.attendees?.filter(a => a.username !== user?.username);
+                    this.selectedActivity.isGoing = false;
+                } else {
+                    const attendee: ProfileModel = {
+                        username: user!.username,
+                        displayName: user!.displayName,
+                        image: user?.image
+                    }
+                    this.selectedActivity?.attendees?.push(attendee);
+                    this.selectedActivity!.isGoing = true;
+                }
+                this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
+            });
+        } catch (error) {
+            console.log(error);
+
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
         }
     }
 }
