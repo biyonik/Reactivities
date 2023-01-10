@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {ActivityModel} from '../../../../../Models/ActivityModel';
 import {observer} from 'mobx-react-lite';
 import {format} from 'date-fns';
+import ActivityListItemAttendeeComponent from '../ActivityListItemAttendee/ActivityListItemAttendee.Component';
 
 interface Props {
     activity: ActivityModel
@@ -36,7 +37,7 @@ const ActivityListItemComponent: React.FC<Props> = ({activity}: Props) => {
                 </span>
             </Segment>
             <Segment secondary>
-                Attendees go here
+                <ActivityListItemAttendeeComponent attendees={activity.attendees!} />
             </Segment>
             <Segment clearing>
                 <span>{activity.description}</span>
