@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {Button, Header, Segment} from 'semantic-ui-react';
 import LoadingComponent from '../../../Components/LoadingComponent/Loading.Component';
-import {ActivityModel} from '../../../Models/ActivityModel';
+import {ActivityFormValues, ActivityModel} from '../../../Models/ActivityModel';
 import {useStore} from '../../../Stores/Store';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
@@ -21,25 +21,17 @@ const ActivityFormComponent: React.FC = () => {
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const [activity, setActivity] = useState<ActivityModel>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: null,
-        city: '',
-        venue: ''
-    });
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
     
     useEffect(() => {
         if (id) {
             loadActivity(id).then((activity) => {
-                setActivity(activity!);
-            })
+                setActivity(new ActivityFormValues(activity));
+            });
         }
     }, [id, loadActivity]);
 
-    const handleFormSubmit = (activity: ActivityModel) => {
+    const handleFormSubmit = (activity: ActivityFormValues) => {
         if (!activity.id) {
             activity.id = uuid();
             createActivity(activity).then(() => {
@@ -80,7 +72,7 @@ const ActivityFormComponent: React.FC = () => {
                         <TextFieldCommonFormElement placeholder='Venue' name='venue'/>
 
                         <Button.Group widths='2'>
-                            <Button loading={submitting} 
+                            <Button loading={isSubmitting} 
                                     disabled={isSubmitting || !dirty || !isValid} 
                                     floated='right'
                                     positive 

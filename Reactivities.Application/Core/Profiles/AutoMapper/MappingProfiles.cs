@@ -11,7 +11,7 @@ public class MappingProfiles : global::AutoMapper.Profile
     {
         CreateMap<Activity, Activity>().ReverseMap();
         CreateMap<Activity, ActivityDTO>()
-            .ForMember(d => d.HotUserName, o => o.MapFrom(s => s.Attendees
+            .ForMember(d => d.HostUserName, o => o.MapFrom(s => s.Attendees
                 .FirstOrDefault(x => x.IsHost).AppUser.UserName)).ReverseMap();
         CreateMap<ActivityAttendee, ProfileDTO>()
             .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
